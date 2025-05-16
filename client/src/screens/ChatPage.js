@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import socket from "../socket"; // socket.js dosyanın doğru yolu
 
 function ChatPage() {
   const [username] = useState(localStorage.getItem("username"));
@@ -6,25 +7,40 @@ function ChatPage() {
   const [message, setMessage] = useState("");
   const [chatLog, setChatLog] = useState([]);
 
+  useEffect(() => {
+    if (!username) {
+      window.location.href = "/";
+    }
+
+    // Sunucudan gelen mesajları dinle
+    socket.on("message", (msg) => {
+      // Eğer mesaj alıcı ya da gönderen bizsek göster
+      if (msg.to === username || msg.from === username) {
+        setChatLog((prev) => [...prev, msg]);
+      }
+    });
+
+    return () => {
+      socket.off("message");
+    };
+  }, [username]);
+
   const handleSend = () => {
     if (!receiver || !message.trim()) return;
 
-    // Şimdilik sadece ekranda gösteriyoruz
     const newMessage = {
       from: username,
       to: receiver,
       text: message,
     };
 
+    // Mesajı socket ile backend'e gönder
+    socket.emit("message", newMessage);
+
+    // Hemen ekranda göster
     setChatLog((prev) => [...prev, newMessage]);
     setMessage("");
   };
-
-  useEffect(() => {
-    if (!username) {
-      window.location.href = "/";
-    }
-  }, [username]);
 
   return (
     <div style={{ padding: "20px" }}>
@@ -36,13 +52,24 @@ function ChatPage() {
         onChange={(e) => setReceiver(e.target.value)}
       /><br /><br />
 
-      <div style={{ border: "1px solid #ccc", height: "200px", padding: "10px", overflowY: "auto" }}>
+      <div
+        style={{
+          border: "1px solid #ccc",
+          height: "200px",
+          padding: "10px",
+          overflowY: "auto",
+        }}
+      >
         {chatLog.map((msg, index) => (
           <div key={index}>
-            <strong>{msg.from} ➜ {msg.to}</strong>: {msg.text}
+            <strong>
+              {msg.from} ➜ {msg.to}
+            </strong>
+            : {msg.text}
           </div>
         ))}
-      </div><br />
+      </div>
+      <br />
 
       <input
         placeholder="Mesaj yaz..."

@@ -70,6 +70,10 @@ io.on("connection", (socket) => {
     });
   });
 
+  socket.on("message", (msg) => {
+  io.emit("message", msg);
+});
+  
   socket.on("disconnect", () => {
     console.log("Kullanıcı ayrıldı: " + socket.id);
   });
