@@ -10,7 +10,7 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('https://fuzzy-points-cry.loca.lt/login', {
+    const response = await fetch('https://livetapp.onrender.com/login', {
 
       method: 'POST',
       headers: {

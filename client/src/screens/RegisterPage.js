@@ -10,7 +10,7 @@ function RegisterPage() {
   e.preventDefault();
 
   try {
-    const response = await fetch("https://fuzzy-points-cry.loca.lt/register", {
+    const response = await fetch("https://livetapp.onrender.com/register", {
 
       method: 'POST',
       headers: {
