@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import socket from "../socket"; // socket.js dosyanın doğru yolu
+import '../css/chat.css';
 
 function ChatPage() {
   const [username] = useState(localStorage.getItem("username"));
@@ -47,7 +48,7 @@ function ChatPage() {
       <h2>Merhaba, {username}</h2>
 
       <input
-        placeholder="Mesaj atmak istediğin kullanıcı"
+        placeholder="Mesaj atmak istediğiniz kullanıcı adı"
         value={receiver}
         onChange={(e) => setReceiver(e.target.value)}
       /><br /><br />
@@ -72,7 +73,7 @@ function ChatPage() {
       <br />
 
       <input
-        placeholder="Mesaj yaz..."
+        placeholder="Mesaj yazınız..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
       />

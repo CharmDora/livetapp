@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import LoginPage from "./screens/LoginPage";
 import RegisterPage from "./screens/RegisterPage";
-import ChatPage from "./screens/ChatPage"; // bu önemli
+import ChatPage from "./screens/ChatPage"; 
 
 function App() {
   return (

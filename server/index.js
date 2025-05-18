@@ -8,17 +8,17 @@ const db = require("./db");
 const app = express();
 const server = http.createServer(app);
 
-// 🔥 CORS ve JSON body middleware
+// Cors ve json middleware kodları
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// 🔥 TEST: Ayakta mı
+// server kontrolü
 app.get("/", (req, res) => {
-  res.send("Server ayakta!");
+  res.send("Server aktif");
 });
 
-// 🔥 REGISTER ROTASI
+// register route
 app.post("/register", (req, res) => {
   const { username, password } = req.body;
 
@@ -26,13 +26,13 @@ app.post("/register", (req, res) => {
   db.run(query, [username, password], function (err) {
     if (err) {
       console.error(err.message);
-      return res.status(400).json({ error: "Kullanıcı adı zaten var." });
+      return res.status(400).json({ error: "Kullanıcı adı zaten mevcut" });
     }
-    res.status(201).json({ message: "Kayıt başarılı!", userId: this.lastID });
+    res.status(201).json({ message: "Kayıt başarıyla gerçekleşti!", userId: this.lastID });
   });
 });
 
-// 🔥 LOGIN ROTASI
+// login route
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -40,18 +40,18 @@ app.post("/login", (req, res) => {
   db.get(query, [username, password], (err, row) => {
     if (err) {
       console.error(err.message);
-      return res.status(500).json({ error: "Sunucu hatası" });
+      return res.status(500).json({ error: "Sunucu problemi" });
     }
 
     if (!row) {
       return res.status(401).json({ error: "Geçersiz kullanıcı adı veya şifre" });
     }
 
-    res.json({ message: "Giriş başarılı", userId: row.id, username: row.username });
+    res.json({ message: "Giriş başarıyla gerçekleşti", userId: row.id, username: row.username });
   });
 });
 
-// 🔥 SOCKET.IO
+// socket.io kodları
 const io = socketIO(server, {
   cors: {
     origin: "*",
@@ -75,11 +75,11 @@ io.on("connection", (socket) => {
 });
   
   socket.on("disconnect", () => {
-    console.log("Kullanıcı ayrıldı: " + socket.id);
+    console.log("Kullanıcı sohbetten ayrıldı: " + socket.id);
   });
 });
 
-// 🔥 SUNUCUYU BAŞLAT
+// sunucu başlatma
 server.listen(5000, () => {
-  console.log("Sunucu çalışıyor: http://localhost:5000");
+  console.log("Sunucu aktif: http://localhost:5000");
 });

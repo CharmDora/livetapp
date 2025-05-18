@@ -1,5 +1,6 @@
 // src/pages/RegisterPage.js
 import React, { useState } from 'react';
+import '../css/register.css';
 
 function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -22,8 +23,8 @@ function RegisterPage() {
     const data = await response.json();
     setMessage(data.message);
   } catch (error) {
-    console.error("Kayıt sırasında hata:", error);
-    setMessage("Kayıt başarısız oldu.");
+    console.error("Kayıt sırasında hata oldu:", error);
+    setMessage("Kayıt başarısız.");
   }
 };
 

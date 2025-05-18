@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../css/login.css';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -22,12 +23,12 @@ function LoginPage() {
     const data = await response.json();
 
     if (response.ok) {
-      setMessage("Giriş başarılı");
+      setMessage("Giriş başarılı oldu");
       localStorage.setItem("username", data.username);
       // Chat ekranına yönlendir
       navigate("/chat");
     } else {
-      setMessage(data.error || "Giriş başarısız");
+      setMessage(data.error || "Giriş başarısız oldu");
     }
   };
 
